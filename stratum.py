@@ -98,6 +98,14 @@ def set_stratum_env():
 
 def build_stratum():
     print('Building stratum...')
+    if get_switch_model_from_settings() == constants.bf2556x_1t:
+        build_stratum_bf2556x_1t()
+    elif get_switch_model_from_settings() == constants.bf6064x_t:
+        build_stratum_bf6064x_t()
+    else:
+        build_stratum_bf6064x_t()
+    
+def build_stratum_bf6064x_t():
     stratum_build_command = 'bazel build //stratum/hal/bin/barefoot:stratum_bf_deb --define sde_ver={} '.format(get_sde_version())
                             #':stratum_bf --define phal_with_gb=true '
     if get_stratum_mode() == 'bsp':
@@ -107,6 +115,15 @@ def build_stratum():
     os.system(stratum_build_command)
     install_stratum()
 
+def build_stratum_bf2556x_1t():
+    print('Building stratum...')
+    stratum_build_command = 'bazel build //stratum/hal/bin/barefoot:stratum_bf --define sde_ver={} '.format(get_sde_version())
+                            #':stratum_bf --define phal_with_gb=true '
+    if get_stratum_mode() == 'bsp':
+        stratum_build_command += ' --define phal_with_onlp=false  '
+    os.chdir(get_stratum_home_absolute())
+    print('Executing stratum build cmd : {}'.format(stratum_build_command))
+    os.system(stratum_build_command)
 
 def install_stratum():
     stratum_install_cmd='sudo apt-get update && \
