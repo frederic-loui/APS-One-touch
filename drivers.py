@@ -43,7 +43,7 @@ def load_and_verify_kernel_modules():
         return bf_kdrv and i2c_i801 and load_and_verify_kernel_modules_bf6064()
 
 def load_and_verify_kernel_modules_bf6064():
-
+    print('Loading drivers for BF6064.')
     execute_cmd('sudo i2cset -y 0 0x70 0x20 \
     sudo i2cset -y 0 0x32 0xE 0x0 \
     sudo i2cset -y 0 0x32 0xF 0x0 \
